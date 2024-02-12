@@ -28,7 +28,7 @@ Welcome to the Instagram Clone Node.js Express backend! This backend supports th
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/DarkShadowFT/web-project-instagram-clone-backend.git
+   git clone https://github.com/muhammadahmed-01/web-project-instagram-clone-backend.git
 
 2. **Install Dependencies:**
     ```bash
