@@ -40,7 +40,7 @@ Welcome to the Instagram Clone Node.js Express backend! This backend supports th
 4. **Run the Server:**
     ```bash
     npm start
-The server will start on http://localhost:3000.
+The server will start on http://localhost:3001.
 
 🤝 Contributions
 Contributions are welcome! If you find a bug, have a feature request, or want to contribute in any way, please open an issue or submit a pull request.
