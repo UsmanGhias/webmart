@@ -35,7 +35,7 @@ jobs:
       - name: SSH into server and deploy Docker image
         uses: appleboy/ssh-action@master
         with:
-          host: 64.23.212.219
+          host: 64.23.214.107
           username: root
           key: ${{ secrets.SSH_KEY }}
           # script: |
