@@ -39,6 +39,7 @@ jobs:
           username: root
           key: ${{ secrets.SSH_KEY }}
           script: |
+            apt update && apt install docker.io -y
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker ps -aq | xargs docker stop | xargs docker rm
             docker run -d -p 5000:5000 $IMAGE_NAME:$IMAGE_TAG
