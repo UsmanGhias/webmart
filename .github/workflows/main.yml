@@ -35,11 +35,11 @@ jobs:
       - name: SSH into server and deploy Docker image
         uses: appleboy/ssh-action@master
         with:
-          host: 143.198.239.1
+          host: 64.23.148.21
           username: root
           key: ${{ secrets.SSH_KEY }}
           script: |
             apt update && apt install docker.io -y
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
             docker ps -aq | xargs docker stop | xargs docker rm
-            docker run -d -p 5000:5000 muhammadahmed1127/instagram-clone:backend-1.0
+            docker run -d -p 5000:3001 muhammadahmed1127/instagram-clone:backend-1.0
