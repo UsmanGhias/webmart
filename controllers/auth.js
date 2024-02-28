@@ -40,13 +40,20 @@ exports.registerUser = async (req, res) => {
       },
     };
 
+    const userData = {
+      name: user.name,
+      email: user.email,
+      profilePic: user.profilePic,
+      id: user._id
+    }
+
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
       { expiresIn: "168h" },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ userData, token });
       }
     );
   } catch (err) {

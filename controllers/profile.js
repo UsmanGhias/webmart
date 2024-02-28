@@ -1,12 +1,8 @@
 const User = require("../models/User");
 // const { validationResult } = require("express-validator");
 const multer = require("multer");
-const fs = require("fs");
+require("fs");
 const express = require('express');
-
-// const validateProfileInput = require("../validation/profile");
-// const validateExperienceInput = require("../validation/experience");
-// const validateEducationInput = require("../validation/education");
 
 // Multer storage configuration
 const storage = multer.diskStorage({
@@ -75,40 +71,6 @@ module.exports = {
 
     },
 
-    async getAllProfiles(req, res) {
-      try {
-        const profiles = await Profile.find()
-          .populate("user", ["name", "avatar"]);
-        res.json(profiles);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send("Server Error");
-      }
-    },
-
-    // Get profile by handle
-    async getProfileByHandle(req, res) {
-      try {
-        const profile = await Profile.findOne({handle: req.params.handle})
-          .populate(
-            "user",
-            ["name", "avatar"]
-          );
-
-        if (!profile)
-          return res.status(400)
-            .json({msg: "There is no profile for this user"});
-
-        res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        if (err.kind === "ObjectId") {
-          return res.status(400).json({msg: "Profile not found"});
-        }
-        res.status(500).send("Server Error");
-      }
-    },
-
 // Get profile by ID
     async getProfileById(req, res) {
       try {
@@ -172,118 +134,31 @@ module.exports = {
             .json({msg: "There is no profile for this user"});
         }
 
-        // Updated
-        profile = await User.updateOne(
-          {
-            name: name,
-            website: website,
-            bio: bio,
-            email: email,
-            phoneNumber: phoneNumber,
-            gender: gender
-          }
-        );
+        // Check if email already exists in the database
+        const existingUser = await User.findOne({email: email});
+        console.log(existingUser._id, profile._id);
+        if (existingUser && existingUser._id.toString() !==
+          profile._id.toString()) {
+          return res.status(400).json({msg: "Email already exists"});
+        }
 
-        // await profile.save();
+        // Update user's profile information
+        profile.name = name;
+        profile.website = website;
+        profile.bio = bio;
+        profile.email = email;
+        profile.phoneNumber = phoneNumber;
+        profile.gender = gender;
+
+        // Handling image upload
+        const file = req.file;
+        if (file) {
+          const imageContent = `/${file.filename}`;
+          profile.profilePic = imageContent;
+        }
+
+        await profile.save();
         res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-      }
-    },
-
-    async addExperience(req, res) {
-      const {errors, isValid} = validateExperienceInput(req.body);
-
-      // Check Validation
-      if (!isValid) {
-        return res.status(400).json(errors);
-      }
-
-      try {
-        const profile = await Profile.findOne({user: req.user.id});
-
-        profile.experience.unshift(req.body);
-
-        await profile.save();
-
-        return res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-      }
-    },
-
-    async deleteExperience(req, res) {
-      try {
-        const profile = await Profile.findOne({user: req.user.id});
-
-        // Get remove index
-        const removeIndex = profile.experience
-          .map(item => item.id)
-          .indexOf(req.params.exp_id);
-
-        profile.experience.splice(removeIndex, 1);
-
-        await profile.save();
-
-        return res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-      }
-    },
-
-    async addEducation(req, res) {
-      const {errors, isValid} = validateEducationInput(req.body);
-
-      // Check Validation
-      if (!isValid) {
-        return res.status(400).json(errors);
-      }
-
-      try {
-        const profile = await Profile.findOne({user: req.user.id});
-
-        profile.education.unshift(req.body);
-
-        await profile.save();
-
-        return res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-      }
-    },
-
-    async deleteEducation(req, res) {
-      try {
-        const profile = await Profile.findOne({user: req.user.id});
-
-        // Get remove index
-        const removeIndex = profile.education
-          .map(item => item.id)
-          .indexOf(req.params.edu_id);
-
-        profile.education.splice(removeIndex, 1);
-
-        await profile.save();
-
-        return res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-      }
-    },
-
-    async deleteUserAndProfile(req, res) {
-      try {
-        // Remove profile
-        await Profile.findOneAndRemove({user: req.user.id});
-        // Remove user
-        await User.findOneAndRemove({_id: req.user.id});
-
-        res.json({msg: 'User deleted'});
       } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

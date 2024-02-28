@@ -18,6 +18,7 @@ exports.likePost = async (req, res) => {
       return res.status(400).json({ msg: "Post already liked" });
     }
 
+    // adding userID to likes array
     post.likes.unshift(req.user.id);
 
     await post.save();
@@ -40,7 +41,6 @@ exports.likePost = async (req, res) => {
 
 
 
-// Unlike a post
 // Unlike a post
 exports.unlikePost = async (req, res) => {
   try {
