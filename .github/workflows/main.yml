@@ -42,4 +42,4 @@ jobs:
             apt update && apt install docker.io -y
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
             docker ps -aq | xargs docker stop | xargs docker rm
-            docker run -d -p 5000:3001 muhammadahmed1127/instagram-clone:backend-1.0
+            docker run -d -p 5000:3001 $IMAGE_NAME:$IMAGE_TAG
