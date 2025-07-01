@@ -1,26 +1,28 @@
-# Use official Node.js runtime as base image
+# Use Node.js 18 LTS
 FROM node:18-alpine
 
-# Set working directory in container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
+# Copy package files
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci --only=production
 
-# Copy the rest of the application code
+# Copy application code
 COPY . .
 
 # Create uploads directory
 RUN mkdir -p public/uploads
 
-# Expose the port the app runs on
+# Expose port
 EXPOSE 3001
 
-# Define environment variable
+# Set environment variables
 ENV NODE_ENV=production
+ENV JWT_SECRET=webmart-pakistan-jwt-secret-key-2024
+ENV MONGO_URI=mongodb://mongo:27017/web-mart
 
-# Command to run the application
+# Start the application
 CMD ["npm", "start"] 

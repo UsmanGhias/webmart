@@ -1,239 +1,253 @@
-# WebMart - Pakistani Socio-Commerce Platform
+# WebMart - Pakistani Socio-Commerce Platform 🇵🇰
 
-A full-stack socio-commerce web application that combines social media features (like Instagram) with e-commerce capabilities, featuring authentic Pakistani context, Islamic names, and PKR currency.
+A full-stack socio-commerce web application combining social media features (like Instagram) with e-commerce capabilities, designed specifically for the Pakistani market with authentic cultural context.
 
 ## 🌟 Features
 
-### Social Media Features
-- **User Authentication**: Secure login/registration system
-- **Social Feed**: Instagram-like post sharing with images
-- **Like System**: Like/unlike posts with duplicate prevention
-- **Real-time Chat**: Socket.io powered messaging system
-- **User Profiles**: Complete user management
+### 🛒 E-Commerce Features
+- **Product Catalog**: Browse traditional Pakistani products (Shalwar Kameez, Prayer Mats, Mangoes, etc.)
+- **Shopping Cart**: Add/remove items with real-time updates
+- **Favorites**: Save favorite products for later
+- **Categories**: Filter by Fashion, Religious, Food, Beauty, Home
+- **Search**: Find products by name or description
+- **Cash on Delivery**: Traditional Pakistani payment method
 
-### E-commerce Features
-- **Product Catalog**: Browse products with categories
-- **Shopping Cart**: Add/remove items with persistent storage
-- **Favorites**: Save favorite products
-- **Search & Filter**: Advanced product filtering by category
-- **Cash on Delivery**: COD payment system
-- **Product Management**: Users can list their own products
+### 📱 Social Media Features
+- **Social Feed**: Instagram-like post sharing with Pakistani cultural content
+- **Like System**: Like/unlike posts (duplicate prevention)
+- **Comments**: Engage with community posts
+- **User Profiles**: Pakistani names and @webmart.pk emails
+- **Real-time Chat**: Socket.io powered messaging
 
-### Admin Panel
-- **Dashboard**: Complete statistics and analytics
-- **User Management**: View, delete, and promote users to admin
-- **Product Management**: Edit, delete, and manage all products
-- **Content Moderation**: Manage posts and user-generated content
+### 🔧 Admin Panel
+- **Dashboard**: Statistics overview (users, products, posts, comments)
+- **User Management**: View, delete, promote users to admin
+- **Product Management**: View, edit, delete products
+- **Post Management**: Content moderation and management
 - **Role-based Access**: Secure admin authentication
 
-### Pakistani Context
-- **Islamic Names**: Authentic Pakistani/Islamic user names
+### 🇵🇰 Pakistani Context
+- **Islamic Names**: Muhammad Ahmed Khan, Fatima Zahra Sheikh, etc.
 - **PKR Currency**: All prices in Pakistani Rupees
-- **Cultural Products**: Traditional items like Shalwar Kameez, Prayer Mats, etc.
-- **Local Context**: Pakistani cultural references and content
+- **Cultural Products**: Traditional Pakistani items and clothing
+- **Local Content**: Posts about Eid, Ramadan, Cricket, Pakistani cities
+- **Email Domain**: @webmart.pk for all users
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Prerequisites
+- Node.js 18+ 
+- MongoDB 6.0+
+- Git
+
+### Local Development
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/UsmanGhias/webmart.git
-   cd webmart
-   ```
+```bash
+git clone https://github.com/UsmanGhias/webmart.git
+cd webmart
+```
 
-2. **Run with Docker Compose**
-   ```bash
-   docker-compose up -d
-   ```
+2. **Install dependencies**
+```bash
+npm install
+```
 
-3. **Create Admin User**
-   ```bash
-   docker exec -it webmart-app node create_admin.js
-   ```
+3. **Start MongoDB**
+```bash
+# Make sure MongoDB is running on localhost:27017
+sudo systemctl start mongod
+```
 
-4. **Access the application**
-   - Main site: http://localhost:3001
-   - Admin panel: http://localhost:3001/admin.html
+4. **Seed the database**
+```bash
+node seed_comprehensive.js
+```
 
-### Option 2: Manual Setup
+5. **Start the server**
+```bash
+npm start
+```
 
-1. **Prerequisites**
-   - Node.js (v14 or higher)
-   - MongoDB (running on localhost:27017)
-   - npm or yarn
+6. **Access the application**
+- Main App: http://localhost:3001
+- Admin Panel: http://localhost:3001/admin.html
 
-2. **Installation**
-   ```bash
-   git clone https://github.com/UsmanGhias/webmart.git
-   cd webmart
-   npm install
-   ```
+### Docker Deployment
 
-3. **Database Setup**
-   ```bash
-   # Start MongoDB service
-   sudo systemctl start mongod
-   
-   # Create admin user
-   node create_admin.js
-   ```
+1. **Build and run with Docker Compose**
+```bash
+docker-compose up -d
+```
 
-4. **Start the application**
-   ```bash
-   npm start
-   ```
+2. **Seed the database (in Docker)**
+```bash
+docker-compose exec app node seed_comprehensive.js
+```
 
-5. **Access the application**
-   - Main site: http://localhost:3001
-   - Admin panel: http://localhost:3001/admin.html
+3. **Access the application**
+- Main App: http://localhost:3001
+- Admin Panel: http://localhost:3001/admin.html
 
-## 👤 Default Admin Credentials
+## 👥 Default Users
 
-After running the admin creation script:
+### Admin User
 - **Email**: admin@webmart.pk
 - **Password**: admin123
 - **Role**: admin
 
-## 🏗️ Project Structure
+### Sample Users
+- **Muhammad Ahmed Khan**: ahmed.khan@webmart.pk
+- **Fatima Zahra Sheikh**: fatima.sheikh@webmart.pk
+- **Ali Hassan Malik**: ali.malik@webmart.pk
+- **Password for all**: password123
+
+## 📦 Sample Data
+
+### Products (15 items)
+- Shalwar Kameez - Cotton (PKR 3,500)
+- Prayer Mat - Velvet (PKR 1,200)
+- Mangoes - Sindhri (PKR 800)
+- Dupatta - Chiffon (PKR 1,500)
+- Quran - Arabic/Urdu (PKR 2,000)
+- And 10 more traditional Pakistani items...
+
+### Posts (8 cultural posts)
+- Eid celebrations
+- Fresh mangoes from Multan
+- Badshahi Mosque sunset
+- Small business startup
+- Cricket match excitement
+- Ramadan iftar preparation
+- Shalimar Gardens visit
+- Quran learning journey
+
+## 🛠 Technology Stack
+
+### Backend
+- **Node.js** with Express.js
+- **MongoDB** with Mongoose ODM
+- **JWT** authentication
+- **Socket.io** for real-time chat
+- **Multer** for file uploads
+- **bcryptjs** for password hashing
+
+### Frontend
+- **HTML5** with semantic structure
+- **CSS3** with responsive design
+- **Vanilla JavaScript** with modern ES6+
+- **Tailwind CSS** for admin panel
+- **Font Awesome** icons
+
+### DevOps
+- **Docker** containerization
+- **Docker Compose** multi-service setup
+- **MongoDB** database with indexes
+- **Environment** configuration
+
+## 📁 Project Structure
 
 ```
 webmart/
-├── controllers/          # Business logic controllers
-│   ├── admin.js         # Admin panel controllers
-│   ├── auth.js          # Authentication controllers
-│   ├── like.js          # Like system controllers
-│   └── ...
-├── middleware/          # Express middleware
-│   ├── adminAuth.js     # Admin authentication middleware
-│   ├── auth.js          # User authentication middleware
-│   └── ...
-├── models/              # MongoDB data models
-│   ├── User.js          # User model with admin role
+├── controllers/          # Business logic
+│   ├── auth.js          # Authentication
+│   ├── admin.js         # Admin operations
+│   ├── product.js       # Product management
+│   ├── post.js          # Social posts
+│   └── like.js          # Like system
+├── middleware/          # Custom middleware
+│   ├── verifyToken.js   # JWT verification
+│   └── adminAuth.js     # Admin authentication
+├── models/              # Database schemas
+│   ├── User.js          # User model
 │   ├── Product.js       # Product model
-│   ├── Post.js          # Social post model
-│   └── ...
+│   ├── Post.js          # Post model
+│   └── Comment.js       # Comment model
 ├── routes/              # API routes
-│   ├── admin.js         # Admin panel routes
-│   ├── api/             # API route modules
-│   └── ...
-├── public/              # Frontend files
-│   ├── admin.html       # Admin dashboard
+│   ├── admin.js         # Admin routes
+│   └── api/             # API endpoints
+├── public/              # Static files
 │   ├── index.html       # Homepage
-│   ├── productfeed.html # Product catalog
-│   ├── postfeed.html    # Social feed
-│   ├── js/              # JavaScript files
-│   └── css/             # Stylesheets
-├── docker-compose.yml   # Docker configuration
-├── Dockerfile           # Docker image definition
-├── create_admin.js      # Admin user creation script
-└── server.js            # Main server file
+│   ├── admin.html       # Admin panel
+│   ├── css/             # Stylesheets
+│   └── js/              # Client-side scripts
+├── docker-compose.yml   # Docker services
+├── Dockerfile           # Container config
+└── seed_comprehensive.js # Sample data
 ```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-NODE_ENV=development
-PORT=3001
-MONGODB_URI=mongodb://localhost:27017/web-mart
-JWT_SECRET=your-super-secret-jwt-key-change-this
-```
-
-### Docker Environment
-
-The docker-compose.yml includes:
-- MongoDB with persistent storage
-- Node.js application with auto-restart
-- Network isolation for security
-- Volume mounting for uploads
-
-## 📱 Usage
-
-### For Users
-1. **Register/Login**: Create account or login with existing credentials
-2. **Browse Products**: View products with Pakistani cultural context
-3. **Social Features**: Share posts, like content, chat with others
-4. **Shopping**: Add items to cart, manage favorites, place orders
-5. **Profile Management**: Update profile, view order history
-
-### For Admins
-1. **Login**: Use admin credentials to access admin panel
-2. **Dashboard**: View site statistics and recent activity
-3. **User Management**: Manage users, promote to admin, handle violations
-4. **Content Moderation**: Review and manage products and posts
-5. **Analytics**: Monitor site performance and user engagement
-
-## 🛠️ Development
-
-### Adding New Features
-
-1. **Backend**: Add controllers in `controllers/`, models in `models/`, routes in `routes/`
-2. **Frontend**: Add HTML pages in `public/`, JavaScript in `public/js/`
-3. **Admin Features**: Extend admin controllers and frontend in admin.html
-
-### Database Schema
-
-- **Users**: Authentication, profiles, roles (user/admin)
-- **Products**: E-commerce items with Pakistani context
-- **Posts**: Social media posts with likes and comments
-- **Comments**: User comments on posts
-- **Cart/Favorites**: User preferences and shopping data
 
 ## 🔒 Security Features
 
-- **JWT Authentication**: Secure token-based authentication
+- **JWT Authentication**: Secure token-based auth
+- **Password Hashing**: bcrypt with salt rounds
 - **Role-based Access**: Admin vs user permissions
-- **Input Validation**: Server-side validation for all inputs
-- **CORS Protection**: Configured for secure cross-origin requests
-- **Password Hashing**: bcrypt for secure password storage
+- **Input Validation**: Server-side validation
+- **CORS Protection**: Cross-origin request handling
+- **File Upload Security**: Multer with file type validation
 
-## 🌐 API Endpoints
+## 🧪 Testing
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
+Run the comprehensive test suite:
 
-### Products
-- `GET /api/products` - Get all products
-- `POST /api/products` - Create new product
-- `PUT /api/products/:id` - Update product
-- `DELETE /api/products/:id` - Delete product
+```bash
+node final_admin_test.js
+```
 
-### Admin (Requires Admin Role)
-- `GET /api/admin/dashboard` - Dashboard statistics
-- `GET /api/admin/users` - Get all users
-- `DELETE /api/admin/users/:id` - Delete user
-- `PUT /api/admin/users/:id/make-admin` - Promote to admin
+Test results include:
+- ✅ Admin authentication
+- ✅ Database statistics
+- ✅ Pakistani context verification
+- ✅ Like system integrity
+- ✅ Admin routes verification
+- ✅ User roles distribution
+- ✅ Sample data quality
+
+## 🚀 Deployment
+
+### Production Environment Variables
+
+```env
+NODE_ENV=production
+JWT_SECRET=your-super-secret-jwt-key
+MONGO_URI=mongodb://localhost:27017/web-mart
+PORT=3001
+```
+
+### Docker Production
+
+```bash
+# Build for production
+docker-compose -f docker-compose.yml up -d
+
+# Scale the application
+docker-compose up -d --scale app=3
+```
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Pakistani cultural context and Islamic naming conventions
-- Modern web technologies (Node.js, Express, MongoDB, Socket.io)
-- Beautiful UI with Tailwind CSS
-- Secure authentication and admin systems
+- Pakistani cultural context and Islamic names
+- Traditional Pakistani products and cuisine
+- Socket.io for real-time features
+- MongoDB for flexible data storage
+- Express.js for robust backend
+- Tailwind CSS for modern UI
 
 ## 📞 Support
 
-For support and questions:
-- Create an issue on GitHub
-- Contact: admin@webmart.pk
+For support, email support@webmart.pk or create an issue on GitHub.
 
 ---
 
-**WebMart** - Connecting Pakistani communities through social commerce! 🇵🇰
+**Made with ❤️ for Pakistan** 🇵🇰

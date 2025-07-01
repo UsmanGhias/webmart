@@ -35,6 +35,7 @@ exports.registerUser = async (req, res) => {
       email: user.email,
       profilePic: user.profilePic,
       isSeller: user.isSeller,
+      role: user.role || 'user',
       id: user._id
     }
 
@@ -89,6 +90,7 @@ exports.loginUser = async (req, res) => {
       email: user.email,
       profilePic: user.profilePic,
       isSeller: user.isSeller,
+      role: user.role || 'user',
       id: user._id
     }
 
