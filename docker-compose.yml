@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # MongoDB service
+  mongodb:
+    image: mongo:7.0
+    container_name: webmart-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: web-mart
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - webmart-network
+
+  # Node.js application service
+  webmart-app:
+    build: .
+    container_name: webmart-app
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/web-mart
+      - JWT_SECRET=your-super-secret-jwt-key-change-this
+    depends_on:
+      - mongodb
+    volumes:
+      - ./public/uploads:/app/public/uploads
+    networks:
+      - webmart-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  webmart-network:
+    driver: bridge 

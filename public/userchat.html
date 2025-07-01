@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Chat UI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Itim&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(100, 116, 139, 0.4);
+      border-radius: 5px;
+    }
+
+    .chathead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-r from-slate-100 to-blue-100 h-screen flex font-sans">
+
+  <!-- Sidebar -->
+  <aside class="w-72 bg-white shadow-xl border-r rounded-r-3xl p-4 flex flex-col">
+    <div class="chathead">
+      <h2 class="text-2xl font-bold text-blue-600 mb-6">Chats</h2>
+      <button
+        class=" text-[20px] text-[#3B3B58] p-1 rounded-full hover:bg-[#e5e7eb] transition duration-200 cursor-pointer"><a
+          href="index.html"><i class="fa-solid fa-house-chimney"></i></a></button>
+    </div>
+
+    <div id="loadingUsers" class="text-center py-4">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+      <p class="text-sm text-gray-600 mt-2">Loading conversations...</p>
+    </div>
+
+    <ul id="userList" class="space-y-3 overflow-y-auto flex-1 hidden">
+      <!-- Users will be loaded here -->
+    </ul>
+  </aside>
+
+  <!-- Main Chat -->
+  <main class="flex-1 flex flex-col bg-white rounded-l-3xl shadow-inner">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between p-5 border-b shadow-sm">
+      <h2 id="chatWith" class="text-xl font-semibold text-gray-700">Select a user to start chatting</h2>
+      <span id="onlineStatus" class="text-sm text-green-500 hidden md:inline hidden">Online</span>
+    </div>
+
+    <!-- Chat Box -->
+    <div id="chatBox" class="flex-1 overflow-y-auto p-6 space-y-5 bg-gradient-to-b from-white to-slate-100">
+      <div id="noChatSelected" class="text-center text-gray-500 mt-20">
+        <i class="fas fa-comments text-6xl mb-4"></i>
+        <p class="text-lg">Select a conversation to start messaging</p>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="p-5 border-t bg-white flex items-center space-x-3">
+      <input id="chatInput" type="text" placeholder="Type your message..."
+        class="flex-1 px-4 py-2 border rounded-full shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+        disabled />
+      <button id="sendBtn" class="bg-blue-500 text-white px-5 py-2 rounded-full shadow-md hover:bg-blue-600 transition"
+        disabled>
+        Send
+      </button>
+    </div>
+  </main>
+
+  <script>
+    let socket;
+    let currentUser = null;
+    let activeConversation = null;
+    let conversations = [];
+    let messages = [];
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
+
+      if (!token || !userData) {
+        alert('Please log in to access chat');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      currentUser = JSON.parse(userData);
+      
+      // Initialize Socket.io
+      socket = io('http://localhost:3001');
+      
+      socket.emit('addUser', currentUser._id);
+      
+      socket.on('getUsers', (users) => {
+        console.log('Online users:', users);
+      });
+
+      socket.on('getMessage', (data) => {
+        receiveMessage(data);
+      });
+
+      await loadConversations();
+      setupEventListeners();
+    });
+
+    async function loadConversations() {
+      const token = localStorage.getItem('token');
+      
+      try {
+        const response = await fetch('http://localhost:3001/api/conversations', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          conversations = await response.json();
+          displayConversations();
+        } else {
+          console.error('Failed to load conversations');
+        }
+      } catch (error) {
+        console.error('Error loading conversations:', error);
+      }
+
+      document.getElementById('loadingUsers').classList.add('hidden');
+      document.getElementById('userList').classList.remove('hidden');
+    }
+
+    function displayConversations() {
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+
+      if (conversations.length === 0) {
+        userList.innerHTML = `
+          <li class="text-center text-gray-500 py-4">
+            <i class="fas fa-inbox text-2xl mb-2"></i>
+            <p>No conversations yet</p>
+            <p class="text-sm">Start a conversation by visiting someone's profile</p>
+          </li>
+        `;
+        return;
+      }
+
+      conversations.forEach(conversation => {
+        const otherUser = conversation.members.find(member => member._id !== currentUser._id);
+        if (!otherUser) return;
+
+        const li = document.createElement('li');
+        li.className = 'bg-gray-100 p-3 rounded-xl hover:bg-blue-100 cursor-pointer transition';
+        li.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <img src="${otherUser.profilePic || 'https://via.placeholder.com/40'}" 
+                 class="w-10 h-10 rounded-full object-cover">
+            <div>
+              <h4 class="font-semibold">${otherUser.fullName}</h4>
+              <p class="text-sm text-gray-600">Click to chat</p>
+            </div>
+          </div>
+        `;
+        
+        li.addEventListener('click', () => selectConversation(conversation, otherUser));
+        userList.appendChild(li);
+      });
+    }
+
+    async function selectConversation(conversation, otherUser) {
+      activeConversation = conversation;
+      
+      document.getElementById('chatWith').textContent = `Chat with ${otherUser.fullName}`;
+      document.getElementById('onlineStatus').classList.remove('hidden');
+      document.getElementById('chatInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+      document.getElementById('noChatSelected').classList.add('hidden');
+
+      // Load messages for this conversation
+      await loadMessages(conversation._id);
+    }
+
+    async function loadMessages(conversationId) {
+      const token = localStorage.getItem('token');
+      
+      try {
+        const response = await fetch(`http://localhost:3001/api/messages/${conversationId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          messages = await response.json();
+          displayMessages();
+        } else {
+          console.error('Failed to load messages');
+        }
+      } catch (error) {
+        console.error('Error loading messages:', error);
+      }
+    }
+
+    function displayMessages() {
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML = '';
+
+      messages.forEach(message => {
+        addMessageToChat(message.sender, message.text, message.sender === currentUser._id);
+      });
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addMessageToChat(senderId, text, isYou) {
+      const chatBox = document.getElementById('chatBox');
+      const container = document.createElement('div');
+      container.className = `flex ${isYou ? 'justify-end' : 'justify-start'}`;
+      container.innerHTML = `
+        <div class="${isYou ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-900'} px-4 py-2 max-w-sm rounded-2xl shadow-md">
+          ${text}
+        </div>
+      `;
+      chatBox.appendChild(container);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function setupEventListeners() {
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendBtn');
+
+      sendBtn.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+      });
+    }
+
+    async function sendMessage() {
+      const chatInput = document.getElementById('chatInput');
+      const message = chatInput.value.trim();
+      
+      if (!message || !activeConversation) return;
+
+      const token = localStorage.getItem('token');
+      const receiverId = activeConversation.members.find(member => member._id !== currentUser._id)._id;
+
+      try {
+        // Send message to backend
+        const response = await fetch('http://localhost:3001/api/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            conversationId: activeConversation._id,
+            text: message
+          })
+        });
+
+        if (response.ok) {
+          const newMessage = await response.json();
+          
+          // Add message to chat
+          addMessageToChat(currentUser._id, message, true);
+          
+          // Send via Socket.io for real-time delivery
+          socket.emit('sendMessage', {
+            senderId: currentUser._id,
+            receiverId: receiverId,
+            text: message
+          });
+
+          chatInput.value = '';
+        } else {
+          alert('Failed to send message');
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
+        alert('Error sending message');
+      }
+    }
+
+    function receiveMessage(data) {
+      if (activeConversation && 
+          activeConversation.members.some(member => member._id === data.senderId)) {
+        addMessageToChat(data.senderId, data.text, false);
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,16 +1,16 @@
 {
-  "name": "web-project-instagram-clone-backend",
+  "name": "web-mart",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A full-stack Node.js web application combining social media features (posts, profiles, likes) with an integrated selling platform.",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "web mart",
   "dependencies": {
+    "axios": "^1.10.0",
     "backblaze-b2": "^1.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -22,6 +22,7 @@
     "mongoose": "^6.12.6",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.21",
-    "passport": "^0.6.0"
+    "passport": "^0.6.0",
+    "socket.io": "^4.8.1"
   }
 }

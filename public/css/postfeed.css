@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f2f5;
+}
+
+.feed {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    display: grid;
+    gap: 2rem;
+}
+
+.post-card {
+    width: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.post-header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.business-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.business-name {
+    font-weight: bold;
+    color: #374151;
+}
+
+.post-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.post-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.post-description {
+    margin-bottom: 1rem;
+}
+
+.post-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.action-btn:hover {
+    transform: scale(1.2);
+}
+
+.comments-section {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.comment {
+    background: #f9fafb;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.add-comment {
+    display: flex;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.add-comment input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.add-comment button {
+    padding: 0.5rem 1rem;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.navbar ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    position: relative;
+}
+
+.navbar ul {
+    list-style-type: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar ul li a::after {
+    height: 4px;
+    border-radius: 30%;
+    width: 0;
+    left: 0;
+    top: 100%;
+    content: '';
+    position: absolute;
+    background: #ffffff;
+    transition: 0.5s;
+    box-shadow: 0px 0px 8px #ffffff;
+}
+
+.navbar ul li a:hover::after {
+    width: 75%;
+    transform: translateX(30%);
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 50px;
+    background-color: #3B3B58;
+    color: aliceblue;
+}
+
+@media (max-width: 768px) {
+    .feed {
+        grid-template-columns: 1fr;
+    }
+
+    .post-card {
+        width: 200px;
+    }
+}
+
+.liked {
+    color: red;
+    transform: scale(1.2);
+}

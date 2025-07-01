@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <title>Buy Now - Web Mart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary: #3B3B58;
+      --secondary: #D1A054;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--primary)] text-gray-800 pb-10">
+  <a href="javascript:history.back()"
+    class="absolute top-6 left-6 bg-[var(--secondary)] text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600 transition-all z-50">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+
+  <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-2xl shadow-xl fade-in">
+    <h2 class="text-3xl font-bold mb-6 text-center text-[var(--primary)]">🛒 Buy Now</h2>
+
+    <div id="loadingProduct" class="text-center py-8">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--primary)] mx-auto"></div>
+      <p class="mt-2 text-gray-600">Loading product...</p>
+    </div>
+
+    <div id="productContent" class="hidden grid grid-cols-1 md:grid-cols-2 gap-10">
+      <!-- Product -->
+      <div class="flex flex-col items-center">
+        <img id="productImage" src="" alt="Product"
+          class="rounded-2xl w-full object-cover shadow-md transition-transform duration-300 hover:scale-105" />
+        <h3 id="productName" class="text-xl font-semibold mt-4"></h3>
+        <p id="productDesc" class="text-gray-500 mt-2 text-center"></p>
+        <p id="productPrice" class="text-2xl font-bold text-[var(--primary)] mt-2"></p>
+        <div class="mt-4">
+          <label class="text-sm text-gray-500">Qty:</label>
+          <input id="quantity" type="number" value="1" min="1" max="10"
+            class="ml-2 w-16 border border-gray-300 rounded-lg px-3 py-1 text-center focus:outline-[var(--primary)]" />
+        </div>
+      </div>
+
+      <!-- Checkout -->
+      <div>
+        <form id="orderForm" class="space-y-5">
+          <!-- Shipping Info -->
+          <div>
+            <h4 class="text-lg font-semibold text-[var(--primary)] mb-2">Shipping Info</h4>
+            <input id="fullName" type="text" placeholder="Full Name" required
+              class="w-full border px-3 py-2 rounded-lg mb-2 focus:outline-[var(--primary)]" />
+            <input id="phone" type="tel" placeholder="Phone Number" required
+              class="w-full border px-3 py-2 rounded-lg mb-2 focus:outline-[var(--primary)]" />
+            <input id="address" type="text" placeholder="Address" required
+              class="w-full border px-3 py-2 rounded-lg mb-2 focus:outline-[var(--primary)]" />
+            <input id="city" type="text" placeholder="City" required
+              class="w-full border px-3 py-2 rounded-lg mb-2 focus:outline-[var(--primary)]" />
+            <input id="postalCode" type="text" placeholder="Postal Code" required
+              class="w-full border px-3 py-2 rounded-lg mb-2 focus:outline-[var(--primary)]" />
+          </div>
+
+          <!-- Payment -->
+          <div>
+            <h4 class="text-lg font-semibold text-[var(--primary)] mb-1">Payment</h4>
+            <div class="flex items-center gap-2 mb-2">
+              <input type="radio" id="cod" checked disabled class="accent-[var(--secondary)]" />
+              <label for="cod" class="text-sm">Cash on Delivery (COD)</label>
+            </div>
+            <p class="text-sm text-gray-500 italic">
+              For online payment, <span class="text-[var(--primary)] font-medium"><a href="userchat.html">Chat with the
+                  Owner</a></span>.
+            </p>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="bg-gray-50 p-4 rounded-xl shadow-inner">
+            <div class="flex justify-between">
+              <span>Subtotal</span>
+              <span id="subtotal">$0.00</span>
+            </div>
+            <div class="flex justify-between mt-1">
+              <span>Shipping</span>
+              <span>$4.99</span>
+            </div>
+            <hr class="my-2" />
+            <div class="flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span id="total">$4.99</span>
+            </div>
+          </div>
+
+          <!-- Confirm Button -->
+          <button id="confirmBtn" type="submit"
+            class="w-full mt-4 py-3 bg-[var(--primary)] text-white font-semibold rounded-xl shadow-md hover:bg-opacity-90 transition-all duration-300 flex items-center justify-center gap-2">
+            <span id="btnText">Confirm Order</span>
+            <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8v4l3.5-3.5L12 0v4a8 8 0 100 16v-4l-3.5 3.5L12 24v-4a8 8 0 01-8-8z"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Business Owner Info -->
+    <div id="ownerInfo" class="hidden mt-10 pt-6 border-t border-gray-200 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img id="ownerImage" src="" alt="Owner"
+          class="w-14 h-14 rounded-full object-cover border-2 border-[var(--secondary)]" />
+        <div>
+          <h4 id="ownerName" class="font-semibold text-[var(--primary)]"></h4>
+          <a href="#" class="text-sm text-blue-600 hover:underline">Visit Profile →</a>
+        </div>
+      </div>
+      <button class="bg-[var(--secondary)] hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition">
+        💬 Need Customization? Chat with Owner
+      </button>
+    </div>
+
+    <div id="errorMessage" class="hidden text-center py-8">
+      <div class="text-red-500 text-lg">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p class="mt-2">Product not found or failed to load.</p>
+        <a href="productfeed.html" class="text-blue-600 hover:underline mt-2 inline-block">← Back to Products</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentProduct = null;
+    const SHIPPING_COST = 4.99;
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('productId');
+      
+      if (!productId) {
+        showError();
+        return;
+      }
+
+      await loadProduct(productId);
+      setupEventListeners();
+    });
+
+    async function loadProduct(productId) {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        alert('Please log in to continue');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3001/api/products/${productId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Product not found');
+        }
+
+        currentProduct = await response.json();
+        displayProduct();
+      } catch (error) {
+        console.error('Error loading product:', error);
+        showError();
+      }
+    }
+
+    function displayProduct() {
+      document.getElementById('loadingProduct').classList.add('hidden');
+      document.getElementById('productContent').classList.remove('hidden');
+      document.getElementById('ownerInfo').classList.remove('hidden');
+
+      // Product details
+      document.getElementById('productImage').src = currentProduct.media || 'https://via.placeholder.com/400';
+      document.getElementById('productName').textContent = currentProduct.name;
+      document.getElementById('productDesc').textContent = currentProduct.desc;
+      document.getElementById('productPrice').textContent = `$${currentProduct.price}`;
+
+      // Owner details
+      document.getElementById('ownerImage').src = currentProduct.user.profilePic || 'https://via.placeholder.com/60';
+      document.getElementById('ownerName').textContent = currentProduct.user.fullName;
+
+      updateOrderSummary();
+    }
+
+    function showError() {
+      document.getElementById('loadingProduct').classList.add('hidden');
+      document.getElementById('errorMessage').classList.remove('hidden');
+    }
+
+    function setupEventListeners() {
+      const quantityInput = document.getElementById('quantity');
+      const form = document.getElementById('orderForm');
+
+      quantityInput.addEventListener('change', updateOrderSummary);
+      form.addEventListener('submit', handleOrderSubmit);
+    }
+
+    function updateOrderSummary() {
+      if (!currentProduct) return;
+
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const subtotal = currentProduct.price * quantity;
+      const total = subtotal + SHIPPING_COST;
+
+      document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+    }
+
+    async function handleOrderSubmit(e) {
+      e.preventDefault();
+      
+      const confirmBtn = document.getElementById('confirmBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('btnText');
+
+      // Disable button and show loading
+      confirmBtn.disabled = true;
+      btnText.textContent = 'Processing...';
+      spinner.classList.remove('hidden');
+
+      try {
+        const token = localStorage.getItem('token');
+        const quantity = parseInt(document.getElementById('quantity').value);
+        
+        const orderData = {
+          productId: currentProduct._id,
+          quantity: quantity,
+          shippingAddress: {
+            fullName: document.getElementById('fullName').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            city: document.getElementById('city').value,
+            postalCode: document.getElementById('postalCode').value
+          }
+        };
+
+        const response = await fetch('http://localhost:3001/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Failed to place order');
+        }
+
+        // Success
+        btnText.textContent = '✅ Order Placed!';
+        confirmBtn.classList.remove('bg-[var(--primary)]');
+        confirmBtn.classList.add('bg-green-600');
+        
+        setTimeout(() => {
+          alert('Order placed successfully! You will receive a confirmation call soon.');
+          window.location.href = 'productfeed.html';
+        }, 1500);
+
+      } catch (error) {
+        console.error('Order error:', error);
+        alert('Failed to place order: ' + error.message);
+        
+        // Reset button
+        confirmBtn.disabled = false;
+        btnText.textContent = 'Confirm Order';
+        spinner.classList.add('hidden');
+        confirmBtn.classList.remove('bg-green-600');
+        confirmBtn.classList.add('bg-[var(--primary)]');
+      }
+    }
+  </script>
+</body>
+
+</html>

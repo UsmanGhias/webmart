@@ -1,12 +1,10 @@
-// controllers/auth.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.registerUser = async (req, res) => {
   try {
-    console.log("Signup API called")
-    const { name, email, password } = req.body;
+    const { fullName, email, password } = req.body;
     let user = await User.findOne({ email });
 
     if (user) {
@@ -14,25 +12,17 @@ exports.registerUser = async (req, res) => {
     }
 
     user = new User({
-      name: name,
+      fullName: fullName,
       email: email,
       password: password,
-      gender: "None",
-      phoneNumber: "",
-      website: "",
       profilePic: "",
-      bio: "",
     });
-    // console.log("User has been created")
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    // console.log("Password hash has been generated: ", user.password)
-
     await user.save();
 
-    // console.log("User has been saved in DB")
 
     const payload = {
       user: {
@@ -41,9 +31,10 @@ exports.registerUser = async (req, res) => {
     };
 
     const userData = {
-      name: user.name,
+      fullName: user.fullName,
       email: user.email,
       profilePic: user.profilePic,
+      isSeller: user.isSeller,
       id: user._id
     }
 
@@ -53,7 +44,11 @@ exports.registerUser = async (req, res) => {
       { expiresIn: "168h" },
       (err, token) => {
         if (err) throw err;
-        res.json({ userData, token });
+        res.json({ 
+          userData, 
+          user: userData,
+          token 
+        });
       }
     );
   } catch (err) {
@@ -90,9 +85,10 @@ exports.loginUser = async (req, res) => {
     }
 
     const userData = {
-      name: user.name,
+      fullName: user.fullName,
       email: user.email,
       profilePic: user.profilePic,
+      isSeller: user.isSeller,
       id: user._id
     }
 
@@ -102,7 +98,11 @@ exports.loginUser = async (req, res) => {
       { expiresIn: '168h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ userData, token });
+        res.json({ 
+          userData, 
+          user: userData,
+          token 
+        });
       }
     );
   } catch (err) {

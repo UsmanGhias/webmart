@@ -3,9 +3,9 @@ const router = express.Router();
 // Middleware to verify the JSON web token
 require("passport");
 const verifyToken = require('../../middleware/verifyToken');
-const {ProfileController} = require("../../controllers/profile");
+const { ProfileController } = require("../../controllers/profile");
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'public/uploads' });
 
 // @route   GET api/profile
 // @desc    Get current user's profile

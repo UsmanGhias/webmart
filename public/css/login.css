@@ -1,0 +1,91 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+.back{
+  text-align: center;
+}
+.back h1{
+  color: #fdfdfd;
+  font-family: itim;
+  font-weight: 400;
+}
+.logback i{
+  background-color: #fdfdfd;
+  color: #3b36c8;
+  padding: 10px;
+  border-radius: 50%;
+  position: absolute;
+  left: 10px;
+  top: 20px;
+}
+
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 320px;
+}
+
+.form-box h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-box {
+  margin-bottom: 15px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background: #3b36c8;
+}
+
+.toggle {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.toggle span {
+  color: #4f46e5;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.message {
+  font-size: 0.9em;
+  margin-top: 5px;
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+.logback{
+  background-color: aqua;
+}

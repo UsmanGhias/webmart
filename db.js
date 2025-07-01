@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const mongoURI =
-  "mongodb://localhost:27017/instagram-clone-project";
+  "mongodb://localhost:27017/web-mart";
 const connectToMongo = () => {
   mongoose.connect(mongoURI, () => {
     console.log("Connected to Mongo Successfully");

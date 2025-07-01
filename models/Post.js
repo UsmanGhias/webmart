@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {models, model} = require("mongoose");
+const { models, model } = require("mongoose");
 
 const postSchema = new mongoose.Schema({
   user: {
@@ -7,11 +7,11 @@ const postSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  image: {
+  media: {
     type: String,
     required: true
   },
-  caption: {
+  desc: {
     type: String,
     required: true
   },

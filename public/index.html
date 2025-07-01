@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Itim&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Web Mart</title>
+</head>
+
+<body onload="slider()">
+
+    <!-- Loader -->
+    <!-- Modern Animated Loader -->
+    <div id="loader-wrapper">
+        <div class="loader-container">
+            <div class="loader-circle"></div>
+            <span class="loader-brand">Web Mart</span>
+        </div>
+    </div>
+
+
+
+
+    <!-- main section home page with gradient background -->
+    <section id="section">
+        <!-- Header section logo search bar bar manu navigation -->
+
+        <header>
+
+            <div class="copyul">
+                <ul>
+                    <li onclick="hideSlideMenu()"><i class="fa-solid fa-xmark"></i></li>
+                    <li><a href="#section">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="productfeed.html">Categories</a></li>
+                    <li><a href="#section2">Top Products</a></li>
+                    <li><a href="postfeed.html">Social</a></li>
+                </ul>
+            </div>
+
+
+            <div class="logo">
+                <h1>Web Mart</h1>
+            </div>
+            <div class="nav hideOnMobile">
+                <ul>
+                    <li><a href="#section">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <!-- DropDown Menu -->
+                    <div class="drop">
+                        <li><a href="#" onclick="toggleMenu()">Categories <i class="fa-solid fa-caret-down"></i></a>
+                        </li>
+                        <div class="dropdown" id="sub-Menu">
+                            <a href="productfeed.html">Explore All<span>></span></a>
+                            <a href="productfeed.html">Electronics <span>></span></a>
+                            <a href="productfeed.html">Fashion <span>></span></a>
+                            <a href="productfeed.html">Home <span>></span></a>
+                            <a href="productfeed.html">Sports <span>></span></a>
+                            <a href="productfeed.html">Books <span>></span></a>
+                            <a href="productfeed.html">Health <span>></span></a>
+                        </div>
+                    </div>
+                    <li><a href="#section2">Top Products</a></li>
+                    <li><a href="postfeed.html">Social</a></li>
+                    <li><a href="productfeed.html" class="hover:text-orange-400">Products</a></li>
+                    <li><a href="chat.html" class="hover:text-orange-400">Chat</a></li>
+                    <li><a href="admin.html" class="hover:text-orange-400">Admin</a></li>
+                </ul>
+
+            </div>
+
+            <div class="profile">
+                <a href="profile.html"><i class="fa-solid fa-user"></i></a>
+                <i onclick="showSlideMenu()" class="fa-solid fa-bars" id="threebarMenu"></i>
+            </div>
+        </header>
+
+        <!-- hero Section with images and Text on left sho details and a button -->
+        <div class="hero">
+            <div class="text">
+                <h1>A Web Based</h1>
+                <h2>Social Commerce Platform <br> for Small Business Owners</h2>
+                <button class="launch"><a href="profile.html">Launch Business</a></button>
+            </div>
+            <!-- <div class="heroimg">
+                <img src="images/Hero section images.png" alt="Product images">
+            </div> -->
+            <div class="background">
+                <div class="backslider">
+                    <img src="images/Hero section images.png" id="slideimage">
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- section 2 for top rated products -->
+    <div class="section2" id="section2">
+        <!-- images for categories -->
+        <div class="first">
+            <div class="product">
+                <a href="productfeed.html">
+                    <img src="images/Black bag (1).jpg" alt="image">
+                    <p>Hand Bags</p>
+                </a>
+            </div>
+            <div class="product">
+                <a href="productfeed.html">
+                    <img src="images/slide 3.jpeg" alt="image">
+                    <p>Crochet</p>
+                </a>
+            </div>
+            <div class="product">
+                <a href="productfeed.html">
+                    <img src="images/slide 11.jpeg" alt="image">
+                    <p>Embroidery</p>
+                </a>
+            </div>
+            <div class="product">
+                <a href="productfeed.html">
+                    <img src="images/slide 7.jpeg" alt="image">
+                    <p>Earings</p>
+                </a>
+            </div>
+            <div class="product">
+                <a href="productfeed.html">
+                    <img src="images/slide 4.jpeg" alt="image">
+                    <p>Key Chains</p>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="second">
+            <h1 class="heading">Top Selling Products</h1>
+
+            <div class="mobileslider hide-on-laptop">
+                <div class="slider-track ">
+                    <img src="https://picsum.photos/id/1018/150/150" alt="Slide 1" />
+                    <img src="https://picsum.photos/id/1015/150/150" alt="Slide 2" />
+                    <img src="https://picsum.photos/id/1019/150/150" alt="Slide 3" />
+                    <img src="https://picsum.photos/id/1020/150/150" alt="Slide 4" />
+                    <img src="https://picsum.photos/id/1024/150/150" alt="Slide 5" />
+                    <img src="https://picsum.photos/id/1018/150/150" alt="Slide 1" />
+                    <img src="https://picsum.photos/id/1015/150/150" alt="Slide 2" />
+                    <img src="https://picsum.photos/id/1019/150/150" alt="Slide 3" />
+                    <img src="https://picsum.photos/id/1020/150/150" alt="Slide 4" />
+                    <img src="https://picsum.photos/id/1024/150/150" alt="Slide 5" />
+                </div>
+            </div>
+
+
+            <div class="slider">
+                <!-- previous button -->
+                <div id="previous"><i class="fa-solid fa-arrow-left"></i></div>
+                <div class="gallary">
+                    <!--  images for gallary or slider -->
+                    <div class="images">
+                        <span><img src="new/Black bag (1).jpg" alt=""></span>
+                        <span><img src="new/slide 13.jpeg" alt=""></span>
+                        <span><img src="new/slide 6.jpeg" alt=""></span>
+                    </div>
+                    <div class="images">
+                        <span><img src="new/slide 4.jpeg" alt=""></span>
+                        <span><img src="new/slide 5.jpeg" alt=""></span>
+                        <span><img src="new/slide 7.jpeg" alt=""></span>
+                    </div>
+                    <div class="images">
+                        <span><img src="new/slide 8.jpeg" alt=""></span>
+                        <span><img src="new/slide 9.jpeg" alt=""></span>
+                        <span><img src="new/slide 11.jpeg" alt=""></span>
+                    </div>
+                </div>
+                <!-- next button -->
+                <div id="next"><i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <!-- section 3 for Top Succes Stories -->
+    <div class="section3">
+        <div class="topsell">
+            <h1 class="headin">Top Success Stories</h1>
+            <div class="sellers">
+                <!-- first link to hover -->
+                <div class="imglink">
+                    <img src="images/computer.jpg" alt="">
+                    <div class="linktext">
+                        <h3>John Addison</h3>
+                        <p>"Fast Service" </p>
+                        <a href="profile.html">View Business</a>
+                    </div>
+                </div>
+                <!-- second link to hover -->
+                <div class="imglink">
+                    <img src="images/computer.jpg" alt="">
+                    <div class="linktext">
+                        <h3>John Addison</h3>
+                        <p>"Top rated Seller"</p>
+                        <a href="profile.html">View Business</a>
+                    </div>
+                </div>
+                <!-- third link to hover -->
+                <div class="imglink">
+                    <img src="images/computer.jpg" alt="">
+                    <div class="linktext">
+                        <h3>John Addison</h3>
+                        <p>"Fast Replier" </p>
+                        <a href="profile.html">View Business</a>
+                    </div>
+                </div>
+                <!-- fourth link to hover -->
+                <div class="imglink">
+                    <img src="images/computer.jpg" alt="">
+                    <div class="linktext">
+                        <h3>John Addison</h3>
+                        <p>"Quality" </p>
+                        <a href="profile.html">View Business</a>
+                    </div>
+                </div>
+            </div>
+            <p>Join the Web Mart Community today <br> and Unlock the full potential of your Business</p>
+            <button class="sell"><a href="login.html">Start Selling</a></button>
+        </div>
+    </div>
+    <div id="about" class="section4">
+        <div class="aboutext">
+            <h1>About Us</h1>
+            <p>At Web Mart, We believe in the Power of Small Businesses.
+                Here is a Web-Based Social Commerce Platform designed to help you,
+                the Entrepreneur, thrive in the digital age.
+                Our Mission: To provide a Simple, affordable, and effective online
+                presence for every Small Business. We empower you to connect with
+                your customers, showcase your unique products and Services,
+                and Grow your Brand Online.
+                At Web Mart, We believe in the Power of Small Businesses.
+                Here is a Web-Based Social Commerce Platform designed to help you,
+                the Entrepreneur, thrive in the digital age.
+                Our Mission: To provide a Simple, affordable, and effective online
+                presence for every Small Business. We empower you to connect with
+                your customers, showcase your unique products and Services,
+                and Grow your Brand Online.</p>
+        </div>
+    </div>
+    <div class="section5">
+        <h1> 4 Easy Steps </h1>
+        <div class="steps">
+            <div class="flow">
+                <p>Step 1: <br> Create Account <br> Sign Up</p>
+            </div>
+            <div class="flow">
+                <p>Step 2: <br> Click "Launch <br> Business"</p>
+            </div>
+            <div class="flow">
+                <p>Step 3: <br> Fill out your <br> Business <br> Details</p>
+            </div>
+            <div class="flow">
+                <p>Step 4: <br> All set <br> Start Selling</p>
+            </div>
+        </div>
+    </div>
+    <div class="section6">
+        <h1 class="heading"> Testimonials & Reviews </h1>
+        <!-- Slider div -->
+        <div class="slideshow-container">
+            <!-- Slider Content -->
+            <div class="special">
+                <div class="mySlides">
+                    <img src="images/girly girl.jpg" alt="Profile image">
+                    <p class="author">John Addison</p>
+                    <q>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Voluptatem placeat, eius similique rerum officia blanditiis accusamus veritatis magni suscipit
+                        totam.
+                        Atque accusamus cum quos amet delectus, ipsam itaque? Recusandae, est!</q>
+                </div>
+
+                <div class="mySlides">
+                    <img src="images/Aqsa girl image profile.jpg" alt="Profile image">
+                    <p class="author">Aqsa Yasmin</p>
+                    <q>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Voluptatem placeat, eius similique rerum officia blanditiis accusamus veritatis magni suscipit
+                        totam.
+                        Atque accusamus cum quos amet delectus, ipsam itaque? Recusandae, est!</q>
+                </div>
+
+                <div class="mySlides">
+                    <img src="images/Kawaiiii.jpg" alt="Profile image">
+                    <p class="author">Alishba Amin</p>
+                    <q>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Voluptatem placeat, eius similique rerum officia blanditiis accusamus veritatis magni suscipit
+                        totam.
+                        Atque accusamus cum quos amet delectus, ipsam itaque? Recusandae, est!</q>
+                </div>
+
+                <div class="mySlides">
+                    <img src="images/a cartoon boy wearing glasses and a red jacket.jpg" alt="Profile image">
+                    <p class="author">Janiffer</p>
+                    <q>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Voluptatem placeat, eius similique rerum officia blanditiis accusamus veritatis magni suscipit
+                        totam.
+                        Atque accusamus cum quos amet delectus, ipsam itaque? Recusandae, est!</q>
+                </div>
+
+                <div class="mySlides">
+                    <img src="images/Premium Vector _ Young man Face Avater Vector illustration design.jpg"
+                        alt="Profile image">
+                    <p class="author">john Seena</p>
+                    <q>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Voluptatem placeat, eius similique rerum officia blanditiis accusamus veritatis magni suscipit
+                        totam.
+                        Atque accusamus cum quos amet delectus, ipsam itaque? Recusandae, est!</q>
+                </div>
+
+                <div class="mySlides">
+                    <img src="images/download (2).jpg" alt="Profile image">
+                    <p class="author">William Wordsworth</p>
+                    <q>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Voluptatem placeat, eius similique rerum officia blanditiis accusamus veritatis magni suscipit
+                        totam.
+                        Atque accusamus cum quos amet delectus, ipsam itaque? Recusandae, est!</q>
+                </div>
+
+            </div>
+            <!-- previous and Next Buttons -->
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>
+        <!-- Dots Div -->
+        <div class="dot-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+        </div>
+    </div>
+    <footer>
+        <div class="wrap">
+            <div class="links">
+                <table>
+                    <tr>
+                        <td><a href="#about">About Us</a></td>
+                        <td><a href="#">Privacy Policy</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">Our Team</a></td>
+                        <td><a href="#">Terms & Conditions</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">Contact Us</a></td>
+                        <td><a href="#">Help Center</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="offers">
+                <div class="subscribe">
+                    <p>Subscribe for Exclusive Offers</p>
+                    <form class="mail" action="" method="">
+                        <input type="email" placeholder="E-Mail...">
+                        <button class="sub"><i class="fa-solid fa-thumbs-up"></i></button>
+                    </form>
+                </div>
+                <div class="socials">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-twitter"></i>
+                    <i class="fa-brands fa-youtube"></i>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+            </div>
+        </div>
+        <p>Rights &copy; Reserved | 2025</p>
+    </footer>
+
+
+    <!-- chatbot assistance -->
+
+    <button class="chatbot-toggle" onclick="toggleChat()">💬</button>
+
+    <div class="chatbot-container" id="chatbot">
+        <div class="chat-header">Web Mart Assistant</div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Ask something..." onkeydown="handleKey(event)" />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+</body>
+<script src="/js/function.js"></script>
+
+</html>
