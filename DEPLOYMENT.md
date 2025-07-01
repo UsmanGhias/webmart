@@ -1,231 +1,334 @@
 # 🚀 WebMart Deployment Guide
 
-## 📋 Quick Setup Summary
+Complete deployment instructions for the Pakistani Socio-Commerce Platform.
 
-Your **Pakistani Socio-Commerce Platform** is now complete with:
-- ✅ Admin Panel with full management capabilities
-- ✅ Pakistani cultural context (Islamic names, PKR currency)
-- ✅ Docker support for easy deployment
-- ✅ Complete social media + e-commerce features
-- ✅ Security with JWT authentication and role-based access
+## 📋 Prerequisites
 
-## 🐳 Docker Deployment (Recommended)
+- **Docker** 20.10+
+- **Docker Compose** 2.0+
+- **Git** for cloning
+- **4GB RAM** minimum
+- **10GB Storage** minimum
 
-### 1. Clone and Start
+## 🔧 Quick Deployment (Docker - Recommended)
+
+### 1. Clone Repository
 ```bash
 git clone https://github.com/UsmanGhias/webmart.git
 cd webmart
+```
+
+### 2. Deploy with Docker Compose
+```bash
+# Build and start all services
 docker-compose up -d
+
+# Check service status
+docker-compose ps
 ```
 
-### 2. Create Admin User
+### 3. Initialize Database
 ```bash
-docker exec -it webmart-app node create_admin.js
+# Seed with Pakistani sample data
+docker-compose exec app node seed_comprehensive.js
 ```
 
-### 3. Access Your Application
-- **Main Site**: http://localhost:3001
+### 4. Access Application
+- **Main Platform**: http://localhost:3001
 - **Admin Panel**: http://localhost:3001/admin.html
-- **Admin Login**: admin@webmart.pk / admin123
 
-## 🔧 Manual Deployment
+## 👥 Default Login Credentials
 
-### Prerequisites
-- Node.js (v14+)
-- MongoDB
-- npm/yarn
+### Admin Access
+- **URL**: http://localhost:3001/admin.html
+- **Email**: admin@webmart.pk
+- **Password**: admin123
 
-### Setup Steps
+### Sample Users
+- **Muhammad Ahmed Khan**: ahmed.khan@webmart.pk / password123
+- **Fatima Zahra Sheikh**: fatima.sheikh@webmart.pk / password123
+- **Ali Hassan Malik**: ali.malik@webmart.pk / password123
+
+## 🛠 Manual Deployment (Development)
+
+### 1. Prerequisites
 ```bash
-# 1. Clone repository
+# Install Node.js 18+
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Install MongoDB 6.0+
+wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+```
+
+### 2. Setup Application
+```bash
+# Clone and install
 git clone https://github.com/UsmanGhias/webmart.git
 cd webmart
-
-# 2. Install dependencies
 npm install
 
-# 3. Start MongoDB
+# Start MongoDB
 sudo systemctl start mongod
+sudo systemctl enable mongod
 
-# 4. Create admin user
-node create_admin.js
+# Seed database
+node seed_comprehensive.js
 
-# 5. Start application
+# Start application
 npm start
 ```
 
-## 👤 Default Admin Credentials
-
-**Email**: admin@webmart.pk  
-**Password**: admin123  
-**Role**: admin
-
-## 🌟 Features Overview
-
-### For Regular Users
-- **Social Feed**: Share posts, like content, chat with others
-- **Product Catalog**: Browse Pakistani products with categories
-- **Shopping Cart**: Add items, manage favorites
-- **Search & Filter**: Find products by category/name
-- **User Profile**: Manage account and preferences
-
-### For Admin Users
-- **Dashboard**: View site statistics and analytics
-- **User Management**: View, delete, promote users to admin
-- **Product Management**: Edit, delete, manage all products
-- **Content Moderation**: Manage posts and user content
-- **Role Management**: Assign admin privileges
-
-## 🔒 Security Features
-
-- **JWT Authentication**: Secure token-based auth
-- **Role-based Access**: Admin vs user permissions
-- **Password Hashing**: bcrypt for secure storage
-- **Input Validation**: Server-side validation
-- **CORS Protection**: Secure cross-origin requests
-
-## 📊 Database Schema
-
-### Users Collection
-```javascript
-{
-  fullName: String,
-  email: String (unique),
-  password: String (hashed),
-  role: String (user/admin),
-  favorites: [ObjectId],
-  cart: [ObjectId],
-  createdAt: Date
-}
-```
-
-### Products Collection
-```javascript
-{
-  name: String,
-  desc: String,
-  price: Number,
-  category: String,
-  quantity: Number,
-  user: ObjectId,
-  createdAt: Date
-}
-```
-
-### Posts Collection
-```javascript
-{
-  desc: String,
-  user: ObjectId,
-  likes: [ObjectId],
-  comments: [ObjectId],
-  createdAt: Date
-}
-```
-
-## 🌐 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-
-### Products
-- `GET /api/products` - Get all products
-- `POST /api/products` - Create product
-- `PUT /api/products/:id` - Update product
-- `DELETE /api/products/:id` - Delete product
-
-### Admin (Requires Admin Role)
-- `GET /api/admin/dashboard` - Dashboard stats
-- `GET /api/admin/users` - Get all users
-- `DELETE /api/admin/users/:id` - Delete user
-- `PUT /api/admin/users/:id/make-admin` - Promote to admin
-- `GET /api/admin/products` - Get all products
-- `PUT /api/admin/products/:id` - Update product
-- `DELETE /api/admin/products/:id` - Delete product
-- `GET /api/admin/posts` - Get all posts
-- `DELETE /api/admin/posts/:id` - Delete post
-
-## 📱 Pakistani Context Features
-
-### Cultural Elements
-- **Islamic Names**: Muhammad Ahmed Khan, Fatima Zahra Sheikh, etc.
-- **PKR Currency**: All prices in Pakistani Rupees
-- **Traditional Products**: Shalwar Kameez, Prayer Mats, Mangoes, etc.
-- **Local Context**: Pakistani cultural references
-
-### Sample Data Included
-- **10 Users** with authentic Pakistani names
-- **15 Products** featuring traditional Pakistani items
-- **8 Social Posts** with Pakistani cultural content
-- **Email Domains**: @webmart.pk for local context
-
-## 🐳 Docker Configuration
-
-### Services
-- **MongoDB**: Persistent database with authentication
-- **Node.js App**: Main application with auto-restart
-- **Networking**: Isolated network for security
-- **Volumes**: Persistent data and uploads
+## 🌐 Production Deployment
 
 ### Environment Variables
+Create `.env` file:
 ```env
 NODE_ENV=production
-MONGODB_URI=mongodb://mongodb:27017/web-mart
 JWT_SECRET=your-super-secret-jwt-key-change-this
+MONGO_URI=mongodb://localhost:27017/web-mart
+PORT=3001
 ```
 
-## 🔄 Production Deployment
+### Docker Production
+```bash
+# Build production image
+docker build -t webmart:latest .
 
-### For VPS/Server Deployment
-1. **Setup Domain**: Point your domain to server IP
-2. **SSL Certificate**: Use Let's Encrypt for HTTPS
-3. **Reverse Proxy**: Configure Nginx for production
-4. **Environment**: Set production environment variables
-5. **Process Manager**: Use PM2 for process management
+# Run with production config
+docker run -d \
+  --name webmart-app \
+  -p 3001:3001 \
+  -e NODE_ENV=production \
+  -e JWT_SECRET=your-secret-key \
+  -e MONGO_URI=mongodb://mongo:27017/web-mart \
+  webmart:latest
+```
 
-### For Cloud Deployment (AWS/Digital Ocean)
-1. **Container Registry**: Push Docker image to registry
-2. **Container Service**: Deploy using ECS/Kubernetes
-3. **Database**: Use managed MongoDB service
-4. **Load Balancer**: Configure for high availability
-5. **CDN**: Use CloudFront for static assets
+### Nginx Reverse Proxy
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
 
-## 📈 Monitoring & Maintenance
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
 
-### Health Checks
-- Application status: `GET /hello`
-- Database connectivity: Monitor MongoDB logs
-- Admin access: Regular admin panel checks
+## �� Verification Steps
 
-### Backup Strategy
-- **Database**: Regular MongoDB backups
-- **Uploads**: Backup user uploaded files
-- **Code**: Version control with Git
+### 1. Health Check
+```bash
+# Check application status
+curl http://localhost:3001/api/health
 
-## 🆘 Troubleshooting
+# Check database connection
+docker-compose exec app node -e "
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://mongo:27017/web-mart')
+  .then(() => console.log('✅ Database connected'))
+  .catch(err => console.log('❌ Database error:', err.message));
+"
+```
+
+### 2. Feature Testing
+```bash
+# Test admin authentication
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@webmart.pk","password":"admin123"}'
+
+# Test product API
+curl http://localhost:3001/api/products
+
+# Test posts API
+curl http://localhost:3001/api/posts/all
+```
+
+### 3. Database Verification
+```bash
+# Connect to MongoDB and check data
+docker-compose exec mongo mongosh web-mart --eval "
+db.users.countDocuments();
+db.products.countDocuments();
+db.posts.countDocuments();
+"
+```
+
+## 📊 Monitoring
+
+### Docker Logs
+```bash
+# View application logs
+docker-compose logs -f app
+
+# View MongoDB logs
+docker-compose logs -f mongo
+
+# View all services
+docker-compose logs -f
+```
+
+### Resource Usage
+```bash
+# Check container resources
+docker stats
+
+# Check disk usage
+docker system df
+```
+
+## 🔧 Maintenance
+
+### Backup Database
+```bash
+# Create backup
+docker-compose exec mongo mongodump --db web-mart --out /tmp/backup
+
+# Copy backup to host
+docker cp $(docker-compose ps -q mongo):/tmp/backup ./backup
+```
+
+### Update Application
+```bash
+# Pull latest changes
+git pull origin master
+
+# Rebuild and restart
+docker-compose down
+docker-compose up -d --build
+```
+
+### Scale Services
+```bash
+# Scale application instances
+docker-compose up -d --scale app=3
+
+# Use load balancer for multiple instances
+```
+
+## 🚨 Troubleshooting
 
 ### Common Issues
-1. **Port 3001 in use**: `pkill -f "node server.js"`
-2. **MongoDB connection**: Check MongoDB service status
-3. **Admin access denied**: Verify admin user exists
-4. **Docker issues**: Check container logs
 
-### Logs Location
-- Application logs: Console output
-- MongoDB logs: `/var/log/mongodb/`
-- Docker logs: `docker logs webmart-app`
+#### Port Already in Use
+```bash
+# Kill process using port 3001
+sudo lsof -ti:3001 | xargs kill -9
+
+# Or change port in docker-compose.yml
+ports:
+  - "3002:3001"  # Host:Container
+```
+
+#### MongoDB Connection Error
+```bash
+# Check MongoDB status
+docker-compose exec mongo mongosh --eval "db.adminCommand('ismaster')"
+
+# Restart MongoDB
+docker-compose restart mongo
+```
+
+#### Admin Panel Access Denied
+```bash
+# Recreate admin user
+docker-compose exec app node -e "
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const User = require('./models/User');
+
+mongoose.connect('mongodb://mongo:27017/web-mart').then(async () => {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash('admin123', salt);
+  
+  await User.findOneAndUpdate(
+    { email: 'admin@webmart.pk' },
+    { role: 'admin', password: hashedPassword },
+    { upsert: true }
+  );
+  
+  console.log('✅ Admin user fixed');
+  process.exit(0);
+});
+"
+```
+
+### Performance Optimization
+
+#### Database Indexes
+```bash
+# Add performance indexes
+docker-compose exec mongo mongosh web-mart --eval "
+db.users.createIndex({ email: 1 }, { unique: true });
+db.products.createIndex({ category: 1 });
+db.posts.createIndex({ createdAt: -1 });
+"
+```
+
+#### Memory Optimization
+```yaml
+# In docker-compose.yml
+services:
+  app:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+```
+
+## 📈 Scaling
+
+### Horizontal Scaling
+```bash
+# Multiple app instances
+docker-compose up -d --scale app=3
+
+# Add load balancer (nginx/traefik)
+```
+
+### Database Scaling
+```bash
+# MongoDB replica set
+# Add to docker-compose.yml:
+mongo-secondary:
+  image: mongo:6.0
+  command: mongod --replSet rs0
+```
+
+## 🔐 Security Checklist
+
+- [ ] Change default JWT secret
+- [ ] Update admin password
+- [ ] Enable MongoDB authentication
+- [ ] Setup SSL/TLS certificates
+- [ ] Configure firewall rules
+- [ ] Regular security updates
+- [ ] Monitor access logs
 
 ## 📞 Support
 
-For issues or questions:
-- **GitHub Issues**: Create issue on repository
-- **Email**: admin@webmart.pk
+For deployment issues:
+- **GitHub Issues**: https://github.com/UsmanGhias/webmart/issues
+- **Email**: support@webmart.pk
 - **Documentation**: Check README.md
 
 ---
 
-**🎉 Your Pakistani Socio-Commerce Platform is Ready!**
-
-Access your admin panel at: http://localhost:3001/admin.html  
-Login with: admin@webmart.pk / admin123 
+**WebMart Pakistani Socio-Commerce Platform** 🇵🇰
+*Ready for production deployment with Pakistani cultural context* 
