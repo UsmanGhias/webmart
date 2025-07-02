@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Media Profile</title>
+  <title>WebMart - User Profile</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -21,7 +21,6 @@
       padding: 20px;
       transition: background 0.3s, color 0.3s;
     }
-
 
     :root {
       --bg-color: #f2f3f7;
@@ -106,8 +105,6 @@
     .modal-footer button:hover {
       background-color: var(--button-hover);
     }
-
-
 
     .profile-container {
       max-width: 800px;
@@ -328,194 +325,204 @@
         transform: translateY(0);
       }
     }
+
+    .nav-bar {
+      background: #fff;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-bar a {
+      color: var(--accent-color);
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+
+    .nav-bar a:hover {
+      text-decoration: underline;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .tab-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #f0f0f0;
+      color: #333;
+      transition: all 0.3s;
+    }
+
+    .tab-button.active {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
   </style>
 </head>
 
-<body>
-
-
-
-
-  <body class="bg-gray-100 text-gray-900">
-    <div class="profile-container max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 mt-6">
-      <div class="top-bar flex justify-between items-center">
-        <div>
-          <div class="profile-image-container relative w-28 h-28 mb-4">
-            <img src=" " alt="Profile"
-              class="profile-image w-full h-full object-cover rounded-full border-4 border-blue-500" id="profilePic">
-            <label class="change-icon absolute bottom-1 right-1 bg-blue-500 text-white p-2 rounded-full cursor-pointer">
-              <i class="fas fa-plus"></i>
-              <input type="file" accept="image/*" class="hidden" onchange="changeProfileImage(event)">
-            </label>
-          </div>
-          <div class="username text-xl font-semibold" id="username">
-            <span id="verifiedBadge" class="hidden text-green-500 text-sm ml-2">✔️ Verified</span>
-          </div>
-        </div>
-        <div class="top-buttons space-x-2">
-          <button onclick="openPostModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"><i
-              class="fas fa-pen"></i> Create Post
-          </button>
-          <button onclick="openSettingModal()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"><i
-              class="fas fa-cog"></i> Settings
-          </button>
-        </div>
-      </div>
-
-      <div class="counts flex space-x-8 font-bold my-4">
-        <div>Posts: <span id="postCount">0</span></div>
-        <div>Followers: 0</div>
-        <div>Following: 0</div>
-      </div>
-
-      <button id="startSellingBtn" onclick="openBusinessModal()"
-        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mb-4">Start Selling</button>
-      <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mb-4"><a
-          href="userchat.html">Chats</a></button>
-
-      <!-- Business Info -->
-      <div id="businessInfo" class="hidden border-t pt-4 mt-4">
-        <h3 class="text-lg font-semibold mb-2">Business Details</h3>
-        <p id="bizDesc" class="text-sm"></p>
-        <p id="bizLocation" class="text-sm text-gray-600"></p>
-        <div class="mt-2 text-sm text-blue-500 space-x-2">
-          <a id="linkInsta" href="#" target="_blank" class="hover:underline">Instagram</a>
-          <a id="linkFacebook" href="#" target="_blank" class="hover:underline">Facebook</a>
-          <a id="linkTiktok" href="#" target="_blank" class="hover:underline">TikTok</a>
-        </div>
-      </div>
-
-      <!-- Catalog -->
-      <button id="openCatalogBtn" onclick="openCatalogModal()"
-        class="hidden mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Catalog</button>
-      <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"></div>
-
-      <!-- Posts Section -->
-      <div class="posts-section grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6" id="postsSection">
-        No post yet.
-      </div>
+<body class="bg-gray-100 text-gray-900">
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <div>
+      <a href="index.html">🏠 Home</a>
+      <a href="postfeed.html">📱 Posts</a>
+      <a href="productfeed.html">🛍️ Products</a>
+      <a href="userchat.html">💬 Chat</a>
     </div>
-
-    <!-- Business Info -->
-    <div id="businessInfo" class="hidden border-t pt-4 mt-4">
-      <h3 class="text-lg font-semibold mb-2">Business Details</h3>
-      <p id="bizDesc" class="text-sm"></p>
-      <p id="bizLocation" class="text-sm text-gray-600"></p>
-      <div class="mt-2 text-sm text-blue-500 space-x-2">
-        <a id="linkInsta" href="#" target="_blank" class="hover:underline">Instagram</a>
-        <a id="linkFacebook" href="#" target="_blank" class="hover:underline">Facebook</a>
-        <a id="linkTiktok" href="#" target="_blank" class="hover:underline">TikTok</a>
-      </div>
+    <div>
+      <a href="profile.html" id="myProfileLink">My Profile</a>
     </div>
+  </div>
 
-    <!-- Post Modal -->
-    <div class="modal" id="postModal">
-      <div class="modal-content">
-        <textarea placeholder="Write something..." id="postDesc"></textarea>
-        <input type="file" accept="image/*,video/*" id="mediaInput">
-        <div class="modal-footer">
-          <button onclick="submitPost()" style="background:var(--accent-color); color:#fff">Post</button>
-          <button onclick="closeModal('postModal')" style="background:#ccc">Cancel</button>
-        </div>
-        <div class="loading" id="postLoading">Posting... ✅</div>
-      </div>
-    </div>
-
-
-    <button id="openCatalogBtn" onclick="openCatalogModal()"
-      class="hidden mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Catalog</button>
-    <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"></div>
-    </div>
-
-    <!-- Modals -->
-
-    <!-- Settings Modal -->
-    <div class="modal" id="settingModal">
-      <div class="modal-content">
-        <label><i class="fas fa-user-edit"></i> Change Username:</label>
-        <input type="text" id="newUsername" placeholder="Enter new username">
-        <button onclick="changeUsername()" style="background:var(--accent-color); color:#fff">Update</button>
-        <br><br>
-        <label><i class="fas fa-palette"></i> Theme:</label>
-        <select onchange="changeTheme(this.value)">
-          <option value="light">🌞 Light</option>
-          <option value="dark">🌙 Dark</option>
-        </select>
-        <br><br>
-        <button onclick="closeModal('settingModal')">Close</button>
-      </div>
-    </div>
-
-    <!-- Business Modal -->
-    <div id="businessModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded shadow w-full max-w-md">
-        <h2 class="text-xl font-semibold mb-4">Business Registration</h2>
-        <form action="">
-
-          <label for="bisNameInput">Business Name:</label>
-          <input id="bizNameInput" type="text" placeholder="Business Name" class="w-full p-2 mb-2 border rounded"
-            required />
-
-          <label for="bizDescInput">Desciption</label>
-          <textarea id="bizDescInput" placeholder="Describe What you do / What you Provide?"
-            class="w-full p-2 mb-2 border rounded" required></textarea>
-
-          <label for="bizLocationInput">Address</label>
-          <input id="bizLocationInput" type="text" placeholder="Location" class="w-full p-2 mb-2 border rounded"
-            required />
-
-          <label for="instaInput">Instagram Profile</label>
-          <input id="instaInput" type="url" placeholder="Instagram Link" class="w-full p-2 mb-2 border rounded"
-            required />
-
-          <label for="fbInput">FaceBook Page</label>
-          <input id="fbInput" type="url" placeholder="Facebook Link" class="w-full p-2 mb-2 border rounded" required />
-
-          <label for="tiktokInput">TikTok account</label>
-          <input id="tiktokInput" type="url" placeholder="TikTok Link" class="w-full p-2 mb-4 border rounded"
-            required />
-          <button type="button" onclick="submitBusiness()"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Submit</button>
-          <button type="submit" onclick="closeModal('businessModal')"
-            class="bg-red-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Close</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Catalog Modal -->
-    <div id="catalogModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded shadow w-full max-w-md">
-        <h2 id="catalogModalTitle" class="text-xl font-semibold mb-4">Add Product</h2>
-        <input id="productName" type="text" placeholder="Product Name" class="w-full p-2 mb-2 border rounded" />
-        <input id="productImage" type="file" accept="image/*" class="w-full mb-2" />
-        <input id="productPrice" type="number" placeholder="Price" class="w-full p-2 mb-2 border rounded" />
-        <textarea id="productDesc" placeholder="Description" class="w-full p-2 mb-2 border rounded"></textarea>
-        <input id="productQty" type="number" placeholder="Quantity" class="w-full p-2 mb-2 border rounded" />
-        <input id="productMaterial" type="text" placeholder="Material" class="w-full p-2 mb-4 border rounded" />
-        <!-- Category selection -->
-        <label class="block font-semibold mb-1">Category:</label>
-        <div id="categoryGroup" class="mb-4 flex flex-col gap-1">
-          <label><input type="radio" name="category" value="Hand Bags" /> Hand Bags</label>
-          <label><input type="radio" name="category" value="Key Chains" /> Key Chains</label>
-          <label><input type="radio" name="category" value="Earings" /> Earings</label>
-          <label><input type="radio" name="category" value="Embroidery" /> Embroidery</label>
-          <label><input type="radio" name="category" value="Beaded Bags" /> Beaded Bags</label>
-          <label><input type="radio" name="category" value="Beaded Chains" /> Beaded Chains</label>
-          <label>
-            <input type="radio" name="category" value="" id="otherCategoryRadio" /> Other
-            <input type="text" id="otherCategoryInput" placeholder="Enter category" class="ml-2 p-1 border rounded"
-              style="display: none;" />
+  <div class="profile-container max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 mt-6">
+    <div class="top-bar flex justify-between items-center">
+      <div>
+        <div class="profile-image-container relative w-28 h-28 mb-4">
+          <img src="" alt="Profile"
+            class="profile-image w-full h-full object-cover rounded-full border-4 border-blue-500" id="profilePic">
+          <label class="change-icon absolute bottom-1 right-1 bg-blue-500 text-white p-2 rounded-full cursor-pointer" id="changeIconLabel" style="display: none;">
+            <i class="fas fa-plus"></i>
+            <input type="file" accept="image/*" class="hidden" onchange="changeProfileImage(event)">
           </label>
         </div>
-        <div class="flex justify-between">
-          <button onclick="closeModal('catalogModal')" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-          <button onclick="submitProduct()"
-            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Save</button>
+        <div class="username text-xl font-semibold" id="username">
+          <span id="verifiedBadge" class="hidden text-green-500 text-sm ml-2">✔️ Verified</span>
         </div>
       </div>
+      <div class="top-buttons space-x-2" id="actionButtons">
+        <!-- Buttons will be dynamically added based on profile type -->
+      </div>
     </div>
-  </body>
-  <script src="/js/favorite.js"></script>
+
+    <div class="counts flex space-x-8 font-bold my-4">
+      <div>Posts: <span id="postCount">0</span></div>
+      <div>Followers: <span id="followerCount">0</span></div>
+      <div>Following: <span id="followingCount">0</span></div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="showTab('posts')">Posts</button>
+      <button class="tab-button" onclick="showTab('products')" id="productsTab">Products</button>
+    </div>
+
+    <!-- Posts Tab -->
+    <div id="postsContent" class="tab-content active">
+      <div id="postsSection" class="posts-section">
+        <!-- Posts will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Products Tab -->
+    <div id="productsContent" class="tab-content">
+      <button id="startSellingBtn" onclick="openBusinessModal()"
+        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mb-4" style="display: none;">Start Selling</button>
+      <button id="openCatalogBtn" onclick="openCatalogModal()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded mb-4" style="display: none;">Add Product</button>
+      <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"></div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <!-- Post Modal -->
+  <div class="modal" id="postModal">
+    <div class="modal-content">
+      <textarea placeholder="Write something..." id="postDesc"></textarea>
+      <input type="file" accept="image/*,video/*" id="mediaInput">
+      <div class="modal-footer">
+        <button onclick="submitPost()" style="background:var(--accent-color); color:#fff">Post</button>
+        <button onclick="closeModal('postModal')" style="background:#ccc">Cancel</button>
+      </div>
+      <div class="loading" id="postLoading">Posting... ✅</div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal" id="settingModal">
+    <div class="modal-content">
+      <label><i class="fas fa-user-edit"></i> Change Username:</label>
+      <input type="text" id="newUsername" placeholder="Enter new username">
+      <button onclick="changeUsername()" style="background:var(--accent-color); color:#fff">Update</button>
+      <br><br>
+      <label><i class="fas fa-palette"></i> Theme:</label>
+      <select onchange="changeTheme(this.value)">
+        <option value="light">🌞 Light</option>
+        <option value="dark">🌙 Dark</option>
+      </select>
+      <br><br>
+      <button onclick="closeModal('settingModal')">Close</button>
+    </div>
+  </div>
+
+  <!-- Business Modal -->
+  <div id="businessModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded shadow w-full max-w-md">
+      <h2 class="text-xl font-semibold mb-4">Business Registration</h2>
+      <form action="">
+        <label for="bisNameInput">Business Name:</label>
+        <input id="bizNameInput" type="text" placeholder="Business Name" class="w-full p-2 mb-2 border rounded" required />
+        <label for="bizDescInput">Description</label>
+        <textarea id="bizDescInput" placeholder="Describe What you do / What you Provide?" class="w-full p-2 mb-2 border rounded" required></textarea>
+        <label for="bizLocationInput">Address</label>
+        <input id="bizLocationInput" type="text" placeholder="Location" class="w-full p-2 mb-2 border rounded" required />
+        <label for="instaInput">Instagram Profile</label>
+        <input id="instaInput" type="url" placeholder="Instagram Link" class="w-full p-2 mb-2 border rounded" required />
+        <label for="fbInput">Facebook Page</label>
+        <input id="fbInput" type="url" placeholder="Facebook Link" class="w-full p-2 mb-2 border rounded" required />
+        <label for="tiktokInput">TikTok account</label>
+        <input id="tiktokInput" type="url" placeholder="TikTok Link" class="w-full p-2 mb-4 border rounded" required />
+        <button type="button" onclick="submitBusiness()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Submit</button>
+        <button type="button" onclick="closeModal('businessModal')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Close</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Catalog Modal -->
+  <div id="catalogModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded shadow w-full max-w-md">
+      <h2 id="catalogModalTitle" class="text-xl font-semibold mb-4">Add Product</h2>
+      <input id="productName" type="text" placeholder="Product Name" class="w-full p-2 mb-2 border rounded" />
+      <input id="productImage" type="file" accept="image/*" class="w-full mb-2" />
+      <input id="productPrice" type="number" placeholder="Price" class="w-full p-2 mb-2 border rounded" />
+      <textarea id="productDesc" placeholder="Description" class="w-full p-2 mb-2 border rounded"></textarea>
+      <input id="productQty" type="number" placeholder="Quantity" class="w-full p-2 mb-2 border rounded" />
+      <input id="productMaterial" type="text" placeholder="Material" class="w-full p-2 mb-4 border rounded" />
+      <label class="block font-semibold mb-1">Category:</label>
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <label><input type="radio" name="category" value="Fashion"> Fashion</label>
+        <label><input type="radio" name="category" value="Religious"> Religious</label>
+        <label><input type="radio" name="category" value="Food"> Food</label>
+        <label><input type="radio" name="category" value="Beauty"> Beauty</label>
+        <label><input type="radio" name="category" value="Home"> Home</label>
+        <label><input type="radio" name="category" value="Other" id="otherCategoryRadio"> Other</label>
+      </div>
+      <input id="otherCategoryInput" type="text" placeholder="Specify other category" class="w-full p-2 mb-4 border rounded" style="display: none;" />
+      <button onclick="submitProduct()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Submit</button>
+      <button onclick="closeModal('catalogModal')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Close</button>
+      <div class="loading" id="postLoading">Adding product... ✅</div>
+    </div>
+  </div>
+
   <script src="/js/profile.js"></script>
+</body>
 
 </html>

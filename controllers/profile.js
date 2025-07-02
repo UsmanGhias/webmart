@@ -107,21 +107,85 @@ module.exports = {
     // Get profile by ID
     async getProfileById(req, res) {
       try {
-        const profile = await User.findOne({
-          _id: req.query.userId,
+        const userId = req.params.id || req.query.userId;
+        const currentUserId = req.user ? req.user.id : null;
+        
+        const profile = await User.findById(userId)
+          .select("fullName email profilePic followers following business favorites createdAt")
+          .populate({
+            path: "business",
+            select: "name desc address insta fb tiktok"
+          });
+
+        if (!profile) {
+          return res.status(404).json({ msg: "User not found" });
+        }
+
+        // Get user's posts
+        const posts = await Post.find({ user: userId })
+          .populate("user", "fullName profilePic")
+          .populate("likes", "fullName")
+          .populate({
+            path: "comments",
+            model: "Comment",
+            populate: {
+              path: "user",
+              model: "User",
+              select: "fullName profilePic"
+            }
+          })
+          .sort({ createdAt: -1 });
+
+        // Get user's products
+        const products = await Product.find({ user: userId })
+          .populate("user", "fullName profilePic")
+          .sort({ createdAt: -1 });
+
+        // Serialize posts
+        const serializedPosts = posts.map(post => {
+          const obj = post.toObject();
+          obj.likes = obj.likes.map(id => id._id ? id._id.toString() : id.toString());
+          return obj;
         });
 
-        if (!profile)
-          return res.status(400)
-            .json({ msg: "There is no profile for this user" });
-
-        res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        if (err.kind === "ObjectId") {
-          return res.status(400).json({ msg: "Profile not found" });
+        // Check if current user is following this profile
+        let isFollowing = false;
+        let isOwnProfile = false;
+        
+        if (currentUserId) {
+          isFollowing = profile.followers.some(follower => follower.toString() === currentUserId);
+          isOwnProfile = userId === currentUserId;
         }
-        res.status(500).send("Server Error");
+
+        const profileData = {
+          _id: profile._id,
+          fullName: profile.fullName,
+          email: profile.email,
+          profilePic: profile.profilePic
+            ? `http://localhost:3001${profile.profilePic}`
+            : "https://via.placeholder.com/120",
+          followers: profile.followers,
+          following: profile.following,
+          business: profile.business,
+          favorites: profile.favorites,
+          createdAt: profile.createdAt,
+          posts: serializedPosts,
+          products,
+          isFollowing,
+          isOwnProfile,
+          followerCount: profile.followers.length,
+          followingCount: profile.following.length,
+          postCount: posts.length,
+          productCount: products.length
+        };
+
+        res.json(profileData);
+      } catch (err) {
+        console.error("Error in getProfileById:", err.message);
+        if (err.kind === "ObjectId") {
+          return res.status(400).json({ msg: "Invalid user ID" });
+        }
+        res.status(500).json({ message: "Server error" });
       }
     },
 
@@ -188,6 +252,86 @@ module.exports = {
       const regex = new RegExp(q, 'i');
       const users = await User.find({ fullName: regex });
       res.json(users);
+    },
+
+    // Follow a user
+    async followUser(req, res) {
+      try {
+        const currentUserId = req.user.id;
+        const targetUserId = req.params.id;
+
+        // Can't follow yourself
+        if (currentUserId === targetUserId) {
+          return res.status(400).json({ msg: "You cannot follow yourself" });
+        }
+
+        // Check if target user exists
+        const targetUser = await User.findById(targetUserId);
+        if (!targetUser) {
+          return res.status(404).json({ msg: "User not found" });
+        }
+
+        // Check if already following
+        const currentUser = await User.findById(currentUserId);
+        if (currentUser.following.includes(targetUserId)) {
+          return res.status(400).json({ msg: "Already following this user" });
+        }
+
+        // Add to following list of current user
+        await User.findByIdAndUpdate(currentUserId, {
+          $addToSet: { following: targetUserId }
+        });
+
+        // Add to followers list of target user
+        await User.findByIdAndUpdate(targetUserId, {
+          $addToSet: { followers: currentUserId }
+        });
+
+        res.json({ msg: "User followed successfully" });
+      } catch (error) {
+        console.error("Follow error:", error);
+        res.status(500).json({ msg: "Server error" });
+      }
+    },
+
+    // Unfollow a user
+    async unfollowUser(req, res) {
+      try {
+        const currentUserId = req.user.id;
+        const targetUserId = req.params.id;
+
+        // Can't unfollow yourself
+        if (currentUserId === targetUserId) {
+          return res.status(400).json({ msg: "You cannot unfollow yourself" });
+        }
+
+        // Check if target user exists
+        const targetUser = await User.findById(targetUserId);
+        if (!targetUser) {
+          return res.status(404).json({ msg: "User not found" });
+        }
+
+        // Check if currently following
+        const currentUser = await User.findById(currentUserId);
+        if (!currentUser.following.includes(targetUserId)) {
+          return res.status(400).json({ msg: "Not following this user" });
+        }
+
+        // Remove from following list of current user
+        await User.findByIdAndUpdate(currentUserId, {
+          $pull: { following: targetUserId }
+        });
+
+        // Remove from followers list of target user
+        await User.findByIdAndUpdate(targetUserId, {
+          $pull: { followers: currentUserId }
+        });
+
+        res.json({ msg: "User unfollowed successfully" });
+      } catch (error) {
+        console.error("Unfollow error:", error);
+        res.status(500).json({ msg: "Server error" });
+      }
     },
   }
 }

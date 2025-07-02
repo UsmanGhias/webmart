@@ -37,9 +37,12 @@ window.addEventListener("DOMContentLoaded", async () => {
             postCard.innerHTML = `
                 <div class="post-header">
                     <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(post.user?.fullName || 'User')}&background=random&color=fff&size=50"
-                         class="business-logo" alt="User Avatar"
-                         onerror="this.src='https://via.placeholder.com/50x50/cccccc/666666?text=User'">
-                    <div class="business-name">${post.user?.fullName || 'Unknown'}</div>
+                         class="business-logo clickable-profile" alt="User Avatar" data-user-id="${post.user?._id}"
+                         onerror="this.src='https://via.placeholder.com/50x50/cccccc/666666?text=User'"
+                         style="cursor: pointer;">
+                    <div class="business-name clickable-profile" data-user-id="${post.user?._id}" style="cursor: pointer; color: #007bff;">
+                        ${post.user?.fullName || 'Unknown'}
+                    </div>
                 </div>
 
                 <img src="https://picsum.photos/600/400?random=${post._id}" class="post-img" alt="Post Media" onerror="this.src='https://via.placeholder.com/600x400/cccccc/666666?text=Post+Image'">
@@ -86,9 +89,19 @@ document.addEventListener('click', async (e) => {
     const commentToggleBtn = e.target.closest('.comment-toggle-btn');
     const submitCommentBtn = e.target.classList.contains('submit-comment') ? e.target : null;
     const shareBtn = e.target.closest('.share-btn');
+    const profileClick = e.target.closest('.clickable-profile');
 
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
+
+    // Profile click handler
+    if (profileClick) {
+        const userId = profileClick.dataset.userId;
+        if (userId && userId !== 'undefined') {
+            window.location.href = `profile.html?userId=${userId}`;
+        }
+        return;
+    }
 
     // Unlike logic
     if (unlikeBtn) {

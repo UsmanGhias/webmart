@@ -41,8 +41,23 @@ router.post(
 // @access  Public
 router.get("/user", ProfileController.getProfileById);
 
+// @route   GET api/profile/user/:id
+// @desc    Get profile by user ID (with auth for follow status)
+// @access  Public/Private
+router.get("/user/:id", verifyToken, ProfileController.getProfileById);
+
 router.get("/email", ProfileController.getProfileByEmail);
 
 router.get("/search", ProfileController.getUsersProfile);
+
+// @route   POST api/profile/follow/:id
+// @desc    Follow a user
+// @access  Private
+router.post("/follow/:id", verifyToken, ProfileController.followUser);
+
+// @route   DELETE api/profile/unfollow/:id
+// @desc    Unfollow a user
+// @access  Private
+router.delete("/unfollow/:id", verifyToken, ProfileController.unfollowUser);
 
 module.exports = router;

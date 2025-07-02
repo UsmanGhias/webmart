@@ -115,7 +115,16 @@
         receiveMessage(data);
       });
 
+      // Check if there's a receiverId in URL parameters (from profile page)
+      const urlParams = new URLSearchParams(window.location.search);
+      const receiverId = urlParams.get('receiverId');
+      
       await loadConversations();
+      
+      if (receiverId) {
+        await handleDirectChat(receiverId);
+      }
+      
       setupEventListeners();
     });
 
@@ -298,6 +307,71 @@
       if (activeConversation && 
           activeConversation.members.some(member => member._id === data.senderId)) {
         addMessageToChat(data.senderId, data.text, false);
+      }
+    }
+
+    async function handleDirectChat(receiverId) {
+      // Check if conversation already exists
+      let existingConversation = conversations.find(conv => 
+        conv.members.some(member => member._id === receiverId)
+      );
+
+      if (existingConversation) {
+        // Select existing conversation
+        const otherUser = existingConversation.members.find(member => member._id === receiverId);
+        selectConversation(existingConversation, otherUser);
+      } else {
+        // Create new conversation
+        await createNewConversation(receiverId);
+      }
+    }
+
+    async function createNewConversation(receiverId) {
+      const token = localStorage.getItem('token');
+      
+      try {
+        // First get receiver info
+        const userResponse = await fetch(`http://localhost:3001/api/profile/user/${receiverId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!userResponse.ok) {
+          throw new Error('User not found');
+        }
+
+        const userData = await userResponse.json();
+        const receiverInfo = userData.profile;
+
+        // Create conversation
+        const response = await fetch('http://localhost:3001/api/conversations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            receiverId: receiverId
+          })
+        });
+
+        if (response.ok) {
+          const newConversation = await response.json();
+          
+          // Add the new conversation to our list
+          conversations.push(newConversation);
+          displayConversations();
+          
+          // Select the new conversation
+          selectConversation(newConversation, receiverInfo);
+        } else {
+          const error = await response.json();
+          alert('Failed to create conversation: ' + error.message);
+        }
+      } catch (error) {
+        console.error('Error creating conversation:', error);
+        alert('Error starting chat: ' + error.message);
       }
     }
   </script>

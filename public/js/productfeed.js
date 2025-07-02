@@ -3,6 +3,55 @@ let currentFilter = 'All';
 const favorites = new Set();
 const cart = new Set();
 
+// Product image mapping for better visuals
+const productImages = {
+    'Fashion': [
+        '/images/Black bag (1).jpg',
+        '/images/White bag.jpg',
+        '/images/Cozy crochet scarf-Cute crochet baby patterns.jpg',
+        '/images/crochet crochet patterns-Stitching Serenity_ Crochet Earrings for Every Mood (1).jpg',
+        '/images/How to Embroider onto a Sweatshirt – Needle Work.jpg'
+    ],
+    'Religious': [
+        '/images/handmade.jpg',
+        '/images/slide 1.jpeg',
+        '/images/slide 2.jpeg'
+    ],
+    'Food': [
+        '/images/slide 3.jpeg',
+        '/images/slide 4.jpeg',
+        '/images/slide 5.jpeg'
+    ],
+    'Beauty': [
+        '/images/slide 6.jpeg',
+        '/images/slide 7.jpeg',
+        '/images/slide 8.jpeg'
+    ],
+    'Home': [
+        '/images/slide 9.jpeg',
+        '/images/slide 10.jpeg',
+        '/images/slide 11.jpeg'
+    ],
+    'Other': [
+        '/images/20 Latest Crochet Keychain Ideas To Try In 2025! - Ask Bart.jpg',
+        '/images/slide 12.jpeg',
+        '/images/slide 13.jpeg'
+    ]
+};
+
+function getProductImage(product) {
+    // If product has uploaded image, use it
+    if (product.media && product.media !== '') {
+        return `http://localhost:3001${product.media}`;
+    }
+    
+    // Otherwise use category-appropriate image
+    const category = product.category || 'Other';
+    const categoryImages = productImages[category] || productImages['Other'];
+    const imageIndex = Math.abs(product._id.charCodeAt(0)) % categoryImages.length;
+    return categoryImages[imageIndex];
+}
+
 window.addEventListener("DOMContentLoaded", async () => {
     const feed = document.getElementById('product-grid');
     const token = localStorage.getItem("token");
@@ -78,16 +127,19 @@ function renderProducts() {
         const matchesSearch = product.name.toLowerCase().includes(query);
         return matchesFilter && matchesSearch;
     }).forEach((product) => {
-
+        const productImage = getProductImage(product);
         grid.innerHTML += `
     <div class="bg-white rounded-xl shadow-md p-4">
-        <img src="https://picsum.photos/400/300?random=${product._id}" class="rounded-lg w-full h-48 object-cover mb-4" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300/cccccc/666666?text=Product+Image'">
+        <img src="${productImage}" class="rounded-lg w-full h-48 object-cover mb-4" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300/cccccc/666666?text=Product+Image'">
             <h3 class="text-lg font-semibold">${product.name}</h3>
             <p class="text-sm text-gray-600 mb-2">${product.desc}</p>
             <p class="text-lg font-bold text-green-600 mb-2">PKR ${product.price || 'N/A'}</p>
             <div class="flex items-center space-x-2 mb-4">
-                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(product.user?.fullName || 'User')}&background=random&color=fff&size=32" class="w-8 h-8 rounded-full" alt="Seller" />
-                <span class="text-sm text-blue-500">${product.user?.fullName || 'Unknown Seller'}</span>
+                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(product.user?.fullName || 'User')}&background=random&color=fff&size=32" 
+                     class="w-8 h-8 rounded-full clickable-profile" alt="Seller" data-user-id="${product.user?._id}" style="cursor: pointer;" />
+                <span class="text-sm text-blue-500 clickable-profile" data-user-id="${product.user?._id}" style="cursor: pointer;">
+                    ${product.user?.fullName || 'Unknown Seller'}
+                </span>
             </div>
             <div class="flex justify-between items-center">
                 <button onclick="toggleFavorite('${product._id}')" class="text-red-500 text-xl" title="${favorites.has(product._id) ? 'Remove from favorites' : 'Add to favorites'}">
@@ -231,7 +283,7 @@ function updateFavoritesModal() {
         item.className = 'favorite-item bg-gray-100 p-3 rounded-lg flex justify-between items-center';
         item.innerHTML = `
             <div class="flex items-center space-x-3">
-                <img src="https://picsum.photos/100/100?random=${product._id}" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100x100/cccccc/666666?text=Product'">
+                <img src="${getProductImage(product)}" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100x100/cccccc/666666?text=Product'">
                 <div>
                     <h4 class="font-semibold">${product.name}</h4>
                     <p class="text-sm text-gray-600">PKR ${product.price}</p>
@@ -268,7 +320,7 @@ function updateCartModal() {
         item.className = 'cart-item bg-gray-100 p-3 rounded-lg flex justify-between items-center';
         item.innerHTML = `
             <div class="flex items-center space-x-3">
-                <img src="https://picsum.photos/100/100?random=${product._id}" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100x100/cccccc/666666?text=Product'">
+                <img src="${getProductImage(product)}" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100x100/cccccc/666666?text=Product'">
                 <div>
                     <h4 class="font-semibold">${product.name}</h4>
                     <p class="text-sm text-gray-600">PKR ${product.price}</p>
@@ -379,3 +431,14 @@ function updateCounts() {
         }
     }
 }
+
+// Profile click handler
+document.addEventListener('click', (e) => {
+    const profileClick = e.target.closest('.clickable-profile');
+    if (profileClick) {
+        const userId = profileClick.dataset.userId;
+        if (userId && userId !== 'undefined') {
+            window.location.href = `profile.html?userId=${userId}`;
+        }
+    }
+});
